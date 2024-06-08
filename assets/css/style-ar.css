@@ -233,6 +233,10 @@ input.quantity__number {
     padding: 1rem;
 }
 
+#productModal .product__details--info__title {
+    font-weight: 600;
+}
+
 @media (max-width: 575px){
     .toast-container {
         width: 100%;
