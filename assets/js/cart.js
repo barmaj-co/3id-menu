@@ -144,7 +144,7 @@ function onSendWhatsappOrder() {
     let clientAddress = $("#clientAddress").val();
 
     let encodedMessage = encodeURIComponent(getWhatsappMsg(clientName, clientAddress, clientNumber));
-    window.open(`https://api.whatsapp.com/send?phone=+2${clientNumber}&text=${encodedMessage}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=+2${whatsappNumber}&text=${encodedMessage}`, '_blank');
     
     $(".cart-counter").text("0");
     localStorage.setItem('cart', JSON.stringify([]));
