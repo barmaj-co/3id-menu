@@ -162,7 +162,7 @@ function onSendWhatsappOrder() {
     closeCartModal();
 }
 
-function getWhatsappMsg(name, address, mobile) {
+function getWhatsappMsg(cart, name, address, mobile) {
     let whatsappMessage = `مرحبا,\n`;
     whatsappMessage += `الاصناف\n\n`;
 
