@@ -34,10 +34,10 @@ function drawMenuTabs(index, bsTarget) {
 }
 
 function drawMenuItem(imagePath, name, description, price) {
-    let menuItem = `<div class=" col-lg-2 col-md-4 col-12">
-                <div class="menu-item">
+    let menuItem = `<div class=" col-lg-3 col-md-4 col-12">
+                <div class="menu-item mt-4">
                   <img class="menu-img img-fluid" src="${imagePath}">
-                  <div class="menu-product-info-text mb-3">
+                  <div class="menu-product-info-text mb-3 mt-5">
                     <h4>
                       <span>${name}</span> - <span class=" price"> ${price} <span>ج</span></span>
                     </h4>

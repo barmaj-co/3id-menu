@@ -80,15 +80,20 @@ function addToLocalStorage(selectedProduct) {
 function onOpenCartCheckoutModal() {
     document.getElementById('cartCheckoutModalProducts').innerHTML = '';
     let cart = getCartItems();
-    cart.sort((a, b) => a.name.localeCompare(b.name));
-    cart.forEach(product => {
-        var template = document.getElementById('cartCheckoutProductTemplate').innerHTML;
-        var productHtml = template.replaceAll("__Name__", product.name)
-            .replaceAll("__ConcatName__", product.name.replaceAll(" ", "-"))
-            .replaceAll("__Price__", product.price * product.quantity)
-            .replaceAll("__Qty__", product.quantity);
-        document.getElementById('cartCheckoutModalProducts').insertAdjacentHTML('beforeend', productHtml);
-    });
+    if (cart.length > 0) {
+        cart.sort((a, b) => a.name?.localeCompare(b.name));
+        cart.forEach(product => {
+            var template = document.getElementById('cartCheckoutProductTemplate').innerHTML;
+            var productHtml = template.replaceAll("__Name__", product.name)
+                .replaceAll("__ConcatName__", product.name.replaceAll(" ", "-"))
+                .replaceAll("__Price__", product.price * product.quantity)
+                .replaceAll("__Qty__", product.quantity);
+            document.getElementById('cartCheckoutModalProducts').insertAdjacentHTML('beforeend', productHtml);
+        });
+    }
+    else {
+        $("#cartCheckoutModalProducts").append("<div class='text-center'>لا يوجد منتجات</div>");
+    }
 
     $(".checkout-total-price").text(cart.reduce((acc, product) => acc + (product.price * product.quantity), 0));
     $('#cartCheckoutModal').modal('show');
@@ -129,30 +134,35 @@ function calcCheckoutPrice(product) {
 }
 
 function onSendWhatsappOrder() {
+    let cart = getCartItems();
+    if(cart.length == 0) {
+        showErrorToast("يرجى اختيار المنتجات");
+        return;
+    }
+
     let clientName = $("#clientName").val();
     if (!clientName) {
-        alert("يرجى ادخال الاسم");
+        showErrorToast("يرجى ادخال الاسم");
         return;
     }
 
     let clientNumber = $("#clientNumber").val();
     if (!clientNumber) {
-        alert("يرجى ادخال رقم الهاتف");
+        showErrorToast("يرجى ادخال رقم الهاتف");
         return;
     }
-    
+
     let clientAddress = $("#clientAddress").val();
 
-    let encodedMessage = encodeURIComponent(getWhatsappMsg(clientName, clientAddress, clientNumber));
+    let encodedMessage = encodeURIComponent(getWhatsappMsg(cart, clientName, clientAddress, clientNumber));
     window.open(`https://api.whatsapp.com/send?phone=+2${clientNumber}&text=${encodedMessage}`, '_blank');
-    
+
     $(".cart-counter").text("0");
     localStorage.setItem('cart', JSON.stringify([]));
     closeCartModal();
 }
 
 function getWhatsappMsg(name, address, mobile) {
-    let cart = getCartItems();
     let whatsappMessage = `مرحبا,\n`;
     whatsappMessage += `الاصناف\n\n`;
 
@@ -169,7 +179,7 @@ function getWhatsappMsg(name, address, mobile) {
 
     whatsappMessage += `اسم العميل: *${name}*\n`;
     whatsappMessage += `رقم الهاتف: *${mobile}*\n`;
-    if(address)
+    if (address)
         whatsappMessage += `العنوان: *${address}*\n`;
 
     whatsappMessage += `\n----------------\n`;
