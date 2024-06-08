@@ -185,6 +185,5 @@ function getWhatsappMsg(cart, name, address, mobile) {
     whatsappMessage += `\n----------------\n`;
     whatsappMessage += `شكرا لتواصلكم .\n`;
     whatsappMessage += `*${brandName}*`;
-    console.log(whatsappMessage);
     return whatsappMessage;
 }
