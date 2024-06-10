@@ -70,6 +70,36 @@ function getCartItems() {
     return JSON.parse(localStorage.getItem('cart')) ?? [];
 }
 
+function getClientCachedInfo() {
+    let cachedInfo = JSON.parse(localStorage.getItem('client-info')) ?? {};
+    return {
+        names: cachedInfo?.names,
+        numbers: cachedInfo?.numbers,
+        addresses: cachedInfo?.addresses
+    };
+}
+
+function setClientCachedInfo(name, number, address) {
+    let cachedInfo = JSON.parse(localStorage.getItem('client-info')) ?? {};
+
+    cachedInfo.names = cachedInfo?.names ?? [];
+    if(!cachedInfo?.names?.includes(name)) {
+        cachedInfo?.names?.push(name);
+    }
+
+    cachedInfo.numbers = cachedInfo?.numbers ?? [];
+    if(!cachedInfo?.numbers?.includes(number)) {
+        cachedInfo?.numbers?.push(number);
+    }
+
+    cachedInfo.addresses = cachedInfo?.addresses ?? [];
+    if(!cachedInfo?.addresses?.includes(address)) {
+        cachedInfo?.addresses?.push(address);
+    }
+
+    localStorage.setItem('client-info', JSON.stringify(cachedInfo));
+}
+
 function addToLocalStorage(selectedProduct) {
     let cart = getCartItems().filter(r => r.name != selectedProduct?.name);
     cart.push(selectedProduct);
@@ -96,6 +126,8 @@ function onOpenCartCheckoutModal() {
     }
 
     $(".checkout-total-price").text(cart.reduce((acc, product) => acc + (product.price * product.quantity), 0));
+
+    onLoadAutoComplete();
     $('#cartCheckoutModal').modal('show');
 }
 
@@ -135,7 +167,7 @@ function calcCheckoutPrice(product) {
 
 function onSendWhatsappOrder() {
     let cart = getCartItems();
-    if(cart.length == 0) {
+    if (cart.length == 0) {
         showErrorToast("يرجى اختيار المنتجات");
         return;
     }
@@ -153,7 +185,9 @@ function onSendWhatsappOrder() {
     }
 
     let clientAddress = $("#clientAddress").val();
+    setClientCachedInfo(clientName, clientNumber, clientAddress);
 
+    showSuccessToast("تم ارسال الطلب بنجاح");
     let encodedMessage = encodeURIComponent(getWhatsappMsg(cart, clientName, clientAddress, clientNumber));
     window.open(`https://api.whatsapp.com/send?phone=+2${whatsappNumber}&text=${encodedMessage}`, '_blank');
 
@@ -187,3 +221,15 @@ function getWhatsappMsg(cart, name, address, mobile) {
     whatsappMessage += `*${brandName}*`;
     return whatsappMessage;
 }
+
+function onLoadAutoComplete() {
+    $("#clientName").autocomplete({
+        source: getClientCachedInfo()?.names
+    });
+    $("#clientNumber").autocomplete({
+        source: getClientCachedInfo()?.numbers
+    });
+    $("#clientAddress").autocomplete({
+        source: getClientCachedInfo()?.addresses
+    });
+ }
