@@ -187,13 +187,18 @@ function onSendWhatsappOrder() {
     let clientAddress = $("#clientAddress").val();
     setClientCachedInfo(clientName, clientNumber, clientAddress);
 
-    showSuccessToast("تم ارسال الطلب بنجاح");
+    
     let encodedMessage = encodeURIComponent(getWhatsappMsg(cart, clientName, clientAddress, clientNumber));
     window.open(`https://api.whatsapp.com/send?phone=+2${whatsappNumber}&text=${encodedMessage}`, '_blank');
 
     $(".cart-counter").text("0");
     localStorage.setItem('cart', JSON.stringify([]));
+    
+    $("#clientName").val("");
+    $("#clientNumber").val("");
+    $("#clientAddress").val("");
     closeCartModal();
+    showSuccessToast("تم ارسال الطلب بنجاح");
 }
 
 function getWhatsappMsg(cart, name, address, mobile) {
