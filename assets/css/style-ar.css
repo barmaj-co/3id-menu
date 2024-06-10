@@ -248,3 +248,29 @@ input.quantity__number {
         width: 30%;
     }
 }
+
+
+
+.ui-autocomplete {
+    z-index: 2999 !important; 
+    position: absolute;
+    background-color: white;
+    border: var(--border-color) 1px solid;
+    border-radius: 5px;
+    padding: 0;
+}
+
+.ui-autocomplete .ui-menu-item{
+    padding: 5px 0;
+    list-style: none;
+    width: 100%;
+    padding-right: 1rem;
+}
+
+.ui-autocomplete .ui-menu-item:hover{
+    background-color: var(--border-color);
+}
+
+#cartCheckoutProductTemplate {
+    z-index: 1999; 
+}
