@@ -5,13 +5,13 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>مطعم أكلة</title>
+  <title>قائمة الاسعار</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/online-shop.png" rel="icon">
+  <link href="assets/img/online-shop.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +35,7 @@
 
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7639356832485784"
-     crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -46,7 +46,7 @@
 
       <a href="index.html" class="logo d-flex align-items-center me-lg-0">
         <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1>مطعم اكلة<span>.</span></h1>
+        <h4><span class="provider-brand-name"></span><span>.</span></h4>
       </a>
 
       <a class="btn-cart-icon" href="javascript:void(0)" onclick="onOpenCartCheckoutModal()">
@@ -249,20 +249,72 @@
       </div>
     </div>
 
+    <div class="modal fade" id="disableCartModal" tabindex="-1" role="dialog" aria-labelledby="footerModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="footerModalLabel"></h5>
+            <button type="button" class="close quickview__close--btn" onclick="$('#disableCartModal').modal('hide')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center pt-0" style="margin-top: -15px;">
+            <img src="./assets/img/online-shopping (1).png" width="150" height="150" class="mb-3">
+            <div class="mb-3">
+              <h6 class="text-secondary">
+                استعد لتجربة الشراء اونلاين , قريباً !!
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main><!-- End #main -->
 
   <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
   <!-- ======= Footer ======= -->
+  <div class="modal fade" id="footerModal" tabindex="-1" role="dialog" aria-labelledby="footerModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="footerModalLabel"></h5>
+          <button type="button" class="close quickview__close--btn" onclick="$('#footerModal').modal('hide')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center pt-0" style="margin-top: -15px;">
+          <img src="./assets/img/online-shop.png" width="150" height="150" class="mb-3">
+          <div class="mb-3">
+            <h6 class="text-secondary">
+              اجعل عملائك يجدونك بسهولة<br /> ووفر لهم تجربة شراء جديدة من موقعك
+              <img src="./assets/img/happy.png" width="30" height="30">
+            </h6>
+          </div>
+
+          <div class="text-center mb-3">
+            <div class="form-group mb-3">
+              <input type="email" class="form-control" id="providerName" placeholder="الاسم">
+            </div>
+
+            <a class=" btn-send-whatsapp" href="javascript:void(0)" onclick="onSendWhatsappDeveloper()">كلمنا
+              وانشئ
+              موقعك الان<i class="icon bi bi-whatsapp pr-2"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer id="footer" class="footer">
     <div class="text-center">
-      &copy; 2024 <strong></strong> جميع الحقوق محفوظة
+      جميع الحقوق محفوظة &copy; <span id="currentYear"></span>
     </div>
     <div class="credits">
-      تصميم م. اسلام هيكل
-    </div>
-  </footer>
-  <!-- End Footer -->
+      تصميم <button type="button" class="btn btn-link" onclick="$('#footerModal').modal('show')">م. اسلام السيد
+        هيكل</button> </div>
+  </footer> <!-- End Footer -->
 
   <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
@@ -301,28 +353,24 @@
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/vendor/jquery/jquery-3.6.0.min.js"></script>
   <script src="assets/vendor/jquery/jquery-ui.min.js"></script>
+  <script src="assets/vendor/jquery-google-sheet-to-json/jquery-google-sheet-to-json.min.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="assets/data/menu-data.js"></script>
-  <script src="assets/data/gallery-data.js"></script>
-  <script src="assets/data/contact-data.js"></script>
-
+  <script src="assets/js/load-excel-data.js"></script>
+  <script src="assets/js/provider-modal.js"></script>
   <script src="assets/js/toast.js"></script>
   <script src="assets/js/cart.js"></script>
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/contact.js"></script>
-  <script src="assets/js/menu.js"></script>
-  <script src="assets/js/gallery.js"></script>
 
   <script>
     onLoadPage();
-    drawMenus();
-    drawGallery();
-    drawStaticData();
+    getProviderInfo();
 
     function onLoadPage() {
       let cart = JSON.parse(localStorage.getItem('cart')) ?? [];
       $(".header .cart-counter").text(cart.length);
+
+      $("#currentYear").text(new Date().getFullYear());
     }
   </script>
 

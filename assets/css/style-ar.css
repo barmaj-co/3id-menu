@@ -184,7 +184,7 @@ input.quantity__number {
     position: absolute;
     padding: 0;
     top: 16px;
-    right: 16px;
+    left: 16px;
     z-index: 9;
 }
 
@@ -273,4 +273,20 @@ input.quantity__number {
 
 #cartCheckoutProductTemplate {
     z-index: 1999; 
+}
+
+
+.footer .credits button{
+    padding: 0;
+    color: white;
+    font-size: small;
+    text-decoration: none;
+}
+
+.provider-brand-name{
+    color: white !important;
+    font-weight: 700;
+}
+#gallery-section-items .img-fluid {
+    width: 100%;
 }

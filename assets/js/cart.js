@@ -1,9 +1,13 @@
-var allProducts = getMenuItems().map(item => item.items);
 var selectedProduct;
 
-function addToCart(name, price) {
-    for (const productArray of allProducts) {
-        selectedProduct = productArray.find(product => product.name === name && product.price === price);
+function addToCart(id) {
+    if (providerInfo?.disableCart) {
+        $("#disableCartModal").modal('show');
+        return;
+    }
+
+    for (const productArray of getMenuItems().map(item => item.items)) {
+        selectedProduct = productArray.find(product => +product.id === id);
         if (selectedProduct) break;
     }
 
@@ -13,7 +17,7 @@ function addToCart(name, price) {
     let images = [selectedProduct?.imagePath];
     for (let index = 0; index < images.length; index++) {
         let imageSlider = `<div class="carousel-item ${index == 0 ? "active" : ""}">
-                                <img src="./assets/img/menu/${selectedProduct?.type}/${images[index]}" class="d-block w-100" alt="...">
+                                <img src="${selectedProduct?.imagePath}" class="d-block w-100" alt="...">
                             </div>`;
 
         $('.product-images-slider').append(imageSlider);
@@ -108,6 +112,11 @@ function addToLocalStorage(selectedProduct) {
 }
 
 function onOpenCartCheckoutModal() {
+    if (providerInfo?.disableCart) {
+        $("#disableCartModal").modal('show');
+        return;
+    }
+    
     document.getElementById('cartCheckoutModalProducts').innerHTML = '';
     let cart = getCartItems();
     if (cart.length > 0) {
@@ -189,7 +198,7 @@ function onSendWhatsappOrder() {
 
     
     let encodedMessage = encodeURIComponent(getWhatsappMsg(cart, clientName, clientAddress, clientNumber));
-    window.open(`https://api.whatsapp.com/send?phone=+2${whatsappNumber}&text=${encodedMessage}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=+2${providerInfo?.whatsappNumber}&text=${encodedMessage}`, '_blank');
 
     $(".cart-counter").text("0");
     localStorage.setItem('cart', JSON.stringify([]));
@@ -223,7 +232,7 @@ function getWhatsappMsg(cart, name, address, mobile) {
 
     whatsappMessage += `\n----------------\n`;
     whatsappMessage += `شكرا لتواصلكم .\n`;
-    whatsappMessage += `*${brandName}*`;
+    whatsappMessage += `*${providerInfo?.brandName}*`;
     return whatsappMessage;
 }
 
