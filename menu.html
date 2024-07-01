@@ -46,90 +46,108 @@
     <main id="main" style="margin-top: 4rem;">
 
       <!-- ======= Menu Section ======= -->
-      <div id="menu" class="menu">
+      <section id="menu" class="menu">
+        <div class="container" data-aos="fade-up">
 
-        <div data-aos="fade-up">
-          <div id="carouselHeaderImages" class="carousel slide carousel-fade" data-bs-ride="carousel">
-            <div class="carousel-indicators ads-indicators">
-            </div>
-
-            <div class="carousel-inner ads-images">
-            </div>
-
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselHeaderImages"
-              data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselHeaderImages"
-              data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
+          <div class="section-header display-qr d-none">
+            <p>قائمة <span class="provider-name"></span></p>
           </div>
 
+          <div class="section-header display-breadcrumb d-none">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item "><a href="index.html">الرئيسية</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)" onclick="history.back()"
+                    class="category-title"></a></li>
+                <li class="breadcrumb-item page-title" aria-current="page"><span class="provider-name"></span></li>
+              </ol>
+            </nav>
+          </div>
+
+          <ul class="nav nav-tabs d-flex menu-tab-titles justify-content-center menu-link-items" data-aos="fade-up"
+            data-aos-delay="200"></ul>
+          <div class="tab-content menu-tab-contents" data-aos="fade-up" data-aos-delay="300"></div>
 
         </div>
-      </div>
+      </section>
       <!-- End Menu Section -->
 
       <!-- ======= Gallery Section ======= -->
-      <section id="gallery" class="gallery section-bg takeaway-section">
+      <section id="gallery" class="gallery section-bg">
         <div class="container" data-aos="fade-up">
 
-          <div class="gallery-slider">
-            <div class="row" id="categories-section-items">
+          <div class="section-header">
+            <p>اعمالنا</p>
+          </div>
+
+          <div class="gallery-slider swiper">
+            <div class="swiper-wrapper align-items-center" id="gallery-section-items">
             </div>
+            <div class="swiper-pagination"></div>
           </div>
 
         </div>
       </section>
       <!-- End Gallery Section -->
 
-      <section id="pricing" class="pricing d-none">
+      <!-- ======= Contact Section ======= -->
+      <section id="contact" class="contact">
         <div class="container" data-aos="fade-up">
-          <div class="row row-cols-1 row-cols-md-2 mb-2 text-center">
 
-            <div class="col">
-              <div class="card mb-4 rounded-3 shadow-sm">
-                <div class="card-header py-3">
-                  <h4 class="my-0 fw-normal">مجانا</h4>
-                </div>
-                <div class="card-body">
-                  <h6 class="card-title pricing-card-title">0 جم<small class="text-muted fw-light"> / شهر</small></h6>
-                  <ul class="list-unstyled mt-3 mb-4 p-0">
-                    <li>الاشتراك مجانا لمدة 3 اشهر</li>
-                    <li>دعم فنى فى اقرب وقت</li>
-                    <li style="height: 1.5rem;"></li>
-                  </ul>
-                  <button type="button" class="w-100 btn btn-lg btn-outline-primary">تواصل الان</button>
+          <div class="section-header">
+            <p>تواصل <span>معنا</span></p>
+          </div>
+
+          <div class="row gy-4">
+            <div class="col-md-6">
+              <div class="info-item  d-flex align-items-center">
+                <i class="icon bi bi-map flex-shrink-0"></i>
+                <div>
+                  <h3>العنوان</h3>
+                  <p id="address"></p>
                 </div>
               </div>
-            </div>
+            </div><!-- End Info Item -->
 
-            <div class="col">
-              <div class="card mb-4 rounded-3 shadow-sm">
-                <div class="card-header py-3">
-                  <h4 class="my-0 fw-normal">شهرى</h4>
-                </div>
-                <div class="card-body">
-                  <h6 class="card-title pricing-card-title">75 جم<small class="text-muted fw-light"> / شهر</small></h6>
-                  <ul class="list-unstyled mt-3 mb-4 p-0">
-                    <li>طلب اوردرات غير محدود</li>
-                    <li>تغيير محتوى رسالة الواتس</li>
-                    <li>دعم فنى 24 / 7</li>
-                  </ul>
-                  <button type="button" class="w-100 btn btn-lg btn-primary">اشترك الان</button>
+            <div class="col-md-6">
+              <div class="info-item d-flex align-items-center">
+                <i class="icon bi bi-whatsapp flex-shrink-0"></i>
+                <div>
+                  <h3>الواتس</h3>
+                  <p id="whatsappNumber"></p>
                 </div>
               </div>
-            </div>
+            </div><!-- End Info Item -->
+
+            <div class="col-md-6">
+              <div class="info-item  d-flex align-items-center">
+                <i class="icon bi bi-telephone flex-shrink-0"></i>
+                <div>
+                  <h3>كلمنا</h3>
+                  <p id="mobileNumber"></p>
+                  <p id="lineNumber"></p>
+                </div>
+              </div>
+            </div><!-- End Info Item -->
+
+            <div class="col-md-6">
+              <div class="info-item  d-flex align-items-center">
+                <i class="icon bi bi-share flex-shrink-0"></i>
+                <div>
+                  <h3>ساعات العمل</h3>
+                  <div><strong id="workingHours"></strong>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Info Item -->
 
           </div>
+
         </div>
       </section>
+      <!-- End Contact Section -->
 
     </main>
-
   </div>
 
   <div class="footer-section"></div>
@@ -141,7 +159,7 @@
   <div class="templates-section"></div>
 
   <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
-          class="bi bi-arrow-up-short"></i></a>
+      class="bi bi-arrow-up-short"></i></a>
 
   <div id="preloader"></div>
 
@@ -156,7 +174,7 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/layout.js"></script>
-  <script src="assets/js/load-index-data.js"></script>
+  <script src="assets/js/load-menu-data.js"></script>
   <script src="assets/js/provider-modal.js"></script>
   <script src="assets/js/toast.js"></script>
   <script src="assets/js/cart.js"></script>
@@ -164,8 +182,7 @@
 
   <script>
     drawLayout();
-    drawCategories();
-    getIndexInfo();
+    getProviderInfo();
   </script>
 
 </body>

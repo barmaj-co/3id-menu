@@ -9,9 +9,9 @@ function getSheetAPI(sheetId, sheetName) {
 
 function getProviderInfo() {
     let SPREADSHEET_ID = '1Q2mHe5wjkjJrpydV9HTC20dlAAI32hfvxaBteChzJ74';
-    let sheet = 'Providers!A2:M'; // Adjust the ranges as needed
-    let providerQuery = new URLSearchParams(window.location.search).get('provider')?.toString();
+    let sheet = 'Providers!A2:R'; // Adjust the ranges as needed
 
+    let providerQuery = new URLSearchParams(window.location.search).get('provider')?.toString();
     let url = getSheetAPI(SPREADSHEET_ID, sheet);
     $.getJSON(url, function (data) {
         let provider = data.values.find(row => {
@@ -43,13 +43,14 @@ function setProviderInfo(provider) {
         hideGallary: provider[11] == "1",
         mainColor: provider[12]
     };
-    
-    $(".provider-brand-name").text(provider[3]);
+
+    $(".provider-name").text(provider[3]);
     $(".contact #address").text(provider[4]);
     $(".contact #whatsappNumber").text(providerInfo?.whatsappNumber);
     $(".contact #mobileNumber").text(providerInfo?.mobileNumber);
     $(".contact #lineNumber").text(providerInfo?.lineNumber);
     $(".contact #workingHours").text(provider[8]);
+    setCategoryBreadcrumbTitle(provider[13]);
 
     if (providerInfo?.hideGallary) {
         $("#gallery").remove();
@@ -58,6 +59,14 @@ function setProviderInfo(provider) {
     }
 
     loadProviderCategories(provider[2]);
+}
+
+function setCategoryBreadcrumbTitle(categoryId) {
+    if (categoryId == 0) {
+        $(".category-title").append("مطاعم تك اواى");
+    } else if (categoryId == 1) {
+        $(".category-title").append("أكل بيتى");
+    }
 }
 
 function loadProviderGallary(sheetId) {
@@ -150,13 +159,22 @@ function loadProviderMenuItems(sheetId) {
         });
 
         providerMenuItems.filter(r => r.items.length == 0).forEach(m => {
-            $(`.category${(+m.id) - 1}`).remove();
+            $(`#category-${(+m.id)}-items`).append("<div class='text-center mt-5'>لا يوجد منتجات حاليا فى هذا القسم</div>");
+
+        //     $(`.category${(+m.id) - 1}`).remove();
         });
 
         if (providerInfo.hideCart) {
             $(".menu-item .btn-add-product-to-cart").remove();
             $(".header .btn-cart-icon").remove();
         }
+
+        // let srcType = new URLSearchParams(window.location.search).get('src')?.toString();
+        // if (srcType == 'qr') {
+            $(".display-qr").removeClass("d-none");
+        // } else {
+        //     $(".display-breadcrumb").removeClass("d-none");
+        // }
 
         document.documentElement.style.setProperty('--color-primary', providerInfo?.mainColor ?? "#ce1212");
         document.querySelector('#preloader').remove();

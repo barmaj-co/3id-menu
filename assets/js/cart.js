@@ -66,7 +66,7 @@ function onAddToCart() {
     selectedProduct.quantity = +$(".quantity__box .quantity__number").val();
     let cart = addToLocalStorage(selectedProduct);
 
-    $(".header .cart-counter").text(cart.length);
+    $(".header .cart-counter").text(cart?.length);
     closeCartModal();
 }
 
@@ -87,17 +87,17 @@ function setClientCachedInfo(name, number, address) {
     let cachedInfo = JSON.parse(localStorage.getItem('client-info')) ?? {};
 
     cachedInfo.names = cachedInfo?.names ?? [];
-    if(!cachedInfo?.names?.includes(name)) {
+    if (!cachedInfo?.names?.includes(name)) {
         cachedInfo?.names?.push(name);
     }
 
     cachedInfo.numbers = cachedInfo?.numbers ?? [];
-    if(!cachedInfo?.numbers?.includes(number)) {
+    if (!cachedInfo?.numbers?.includes(number)) {
         cachedInfo?.numbers?.push(number);
     }
 
     cachedInfo.addresses = cachedInfo?.addresses ?? [];
-    if(!cachedInfo?.addresses?.includes(address)) {
+    if (!cachedInfo?.addresses?.includes(address)) {
         cachedInfo?.addresses?.push(address);
     }
 
@@ -105,9 +105,16 @@ function setClientCachedInfo(name, number, address) {
 }
 
 function addToLocalStorage(selectedProduct) {
+    if (localStorage.getItem("providerName") && ($(".page-title .provider-name").text() != localStorage.getItem("providerName"))) {
+        showErrorToast("لا يمكن اضافة منتجات من متجر مختلف");
+        return;
+    }
+
     let cart = getCartItems().filter(r => r.name != selectedProduct?.name);
     cart.push(selectedProduct);
     localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.removeItem("providerName");
+    localStorage.setItem("providerName", $(".page-title .provider-name").text());
     return cart;
 }
 
@@ -116,7 +123,12 @@ function onOpenCartCheckoutModal() {
         $("#disableCartModal").modal('show');
         return;
     }
-    
+
+    if(localStorage.getItem("providerName")){
+        $(".checkout-provider-name").text("");
+        $(".checkout-provider-name").text(` - ${localStorage.getItem("providerName")}`);
+    }
+
     document.getElementById('cartCheckoutModalProducts').innerHTML = '';
     let cart = getCartItems();
     if (cart.length > 0) {
@@ -163,6 +175,12 @@ function onRemoveCheckout(productName) {
 
     cart = cart.filter(p => p.name !== productName);
     $(".header .cart-counter").text(cart.length);
+    
+    if(cart?.length == 0) {
+        localStorage.removeItem("providerName");
+        $(".checkout-provider-name").text("");
+    }
+
     localStorage.setItem('cart', JSON.stringify(cart));
     onOpenCartCheckoutModal();
 }
@@ -171,7 +189,7 @@ function calcCheckoutPrice(product) {
     let cart = addToLocalStorage(product);
     $(".cart-checkout-product input.quantity__number-" + product.name.replaceAll(" ", "-")).val(product.quantity);
     $(".cart-checkout-product .current__price-" + product.name.replaceAll(" ", "-")).text(product.quantity * product.price);
-    $(".checkout-total-price").text(cart.reduce((acc, product) => acc + (product.price * product.quantity), 0));
+    $(".checkout-total-price").text(cart?.reduce((acc, product) => acc + (product.price * product.quantity), 0));
 }
 
 function onSendWhatsappOrder() {
@@ -196,13 +214,13 @@ function onSendWhatsappOrder() {
     let clientAddress = $("#clientAddress").val();
     setClientCachedInfo(clientName, clientNumber, clientAddress);
 
-    
+
     let encodedMessage = encodeURIComponent(getWhatsappMsg(cart, clientName, clientAddress, clientNumber));
     window.open(`https://api.whatsapp.com/send?phone=+2${providerInfo?.whatsappNumber}&text=${encodedMessage}`, '_blank');
 
     $(".cart-counter").text("0");
     localStorage.setItem('cart', JSON.stringify([]));
-    
+
     $("#clientName").val("");
     $("#clientNumber").val("");
     $("#clientAddress").val("");
@@ -246,4 +264,4 @@ function onLoadAutoComplete() {
     $("#clientAddress").autocomplete({
         source: getClientCachedInfo()?.addresses
     });
- }
+}
